@@ -1,1 +1,2 @@
-# BTNhom
+﻿# BTNhom
+lần 1: test
