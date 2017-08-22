@@ -1,0 +1,11 @@
+﻿cnn.Open();
+                DialogResult hoicn;
+                hoicn = MessageBox.Show("Bạn có muốn cập nhật?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (hoicn == DialogResult.OK)
+                {
+                    string luu = "insert into NHANVIEN values('" + txtMaNV.Text + "',N'" + txtHoten.Text + "','" + txtNgaySinh.Text + "',N'" + txtDiaChi.Text + "','"+txtSDT.Text+"')";
+                    SqlCommand cmdluu = new SqlCommand(luu, cnn);
+                    cmdluu.ExecuteNonQuery();
+                }
+                    
+                ketnoicsdl();
