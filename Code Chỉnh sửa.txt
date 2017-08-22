@@ -1,0 +1,10 @@
+﻿cnn.Open();
+                DialogResult hoicn;
+                hoicn = MessageBox.Show("Bạn có muốn cập nhật?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (hoicn == DialogResult.OK)
+                {
+                    string sua = "update NHANVIEN set HoTen=N'"+txtHoten.Text+"', NgaySinh='"+txtNgaySinh.Text+"',DiaChi_NV=N'"+txtDiaChi.Text+"', Sdt_NV='"+txtSDT.Text+"' where MaNV='"+txtMaNV.Text+"'";
+                    SqlCommand cmdsua = new SqlCommand(sua, cnn);
+                    cmdsua.ExecuteNonQuery();
+                }
+                ketnoicsdl();
