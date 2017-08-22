@@ -1,0 +1,25 @@
+﻿ SqlConnection cnn = new SqlConnection(@"Data Source=DangThinh;Initial Catalog=QLCHDT;Integrated Security=True");
+        private void ketnoicsdl()
+        {
+            SqlConnection cnn = new SqlConnection(@"Data Source=DangThinh;Initial Catalog=QLCHDT;Integrated Security=True");
+            cnn.Open();
+            string sql = "select * from NHANVIEN";  // lay het du lieu trong bang sinh vien
+            SqlCommand com = new SqlCommand(sql, cnn); //bat dau truy van
+            com.CommandType = CommandType.Text;
+            SqlDataAdapter da = new SqlDataAdapter(com); //chuyen du lieu ve
+            DataTable dt = new DataTable(); //tạo một kho ảo để lưu trữ dữ liệu
+            da.Fill(dt);  // đổ dữ liệu vào kho
+            cnn.Close();  // đóng kết nối
+            dataGridView1.DataSource = dt; //đổ dữ liệu vào datagridview
+            cnn.Close();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ketnoicsdl();
+        }
