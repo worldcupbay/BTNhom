@@ -1,0 +1,41 @@
+Create procedure sp_timMaNV (@chuoi nvarchar(20))
+As
+Begin
+Set @chuoi = Ltrim(Rtrim(@chuoi))
+Select *
+From NhanVien
+Where MaNV Like ‘%’ + @chuoi + ‘%’
+End
+Chúng ta xây dựng đoạn code trong ngôn ngữ C# như sau
+public DataTable timKiemMaNV()
+{
+string chuoiTim = txt1.Text.ToString(); //txt1 là tên của textbox dùng để nhập từ khóa tìm kiếm
+SqlCommand sqlcommand = new SqlCommand();
+sqlcommand.CommandType = CommandType.StoredProcedure;
+sqlcommand.CommandText = "sp_timMaNV";
+sqlcommand.Connection = kn.connect(); // kn là một đối tượng thuộc lớp kết nối được xây dựng trước
+SqlParameter para = new SqlParameter("@chuoitim", SqlDbType.NVarChar);
+para.Value = chuoiTim;
+sqlcommand.Parameters.Add(para);
+SqlDataReader reader = sqlcommand.ExecuteReader();
+DataTable bang = new DataTable();
+for (int i = 0; i < reader.FieldCount; i++) // duyệt qua tất cả các cột trong reader
+{
+bang.Columns.Add(i.ToString()); // tạo các cột tương ứng và tạm thời có headtext là các số 1,2,3,4..
+}
+while (reader.Read()) // duyệt qua toàn bộ các dòng mà reader đang nắm giữ
+{
+object[] objs = new object[reader.FieldCount]; // khai báo một mảng object để lưu toàn bộ các cell trong mỗi dòng trong reader
+reader.GetValues(objs); // đưa giá trị trong reader vào mảng object
+bang.Rows.Add(objs); // thêm dòng dữ liệu đó vào bảng
+}
+bang.Columns[0].ColumnName = "Mã nhân viên";
+bang.Columns[1].ColumnName = "Tên nhân viên";
+bang.Columns[2].ColumnName = "Quê quán";
+bang.Columns[3].ColumnName = “Mã phòng”;
+bang.Columns[4].ColumnName = “Tên phòng”;
+return bang;
+}
+
+Read more: http://www.ddth.com/showthread.php/553110-gi%C3%BAp-%C4%91%E1%BB%A1-code-t%C3%ACm-ki%E1%BA%BFm-trong-c#ixzz4qkXlR4Tp
+
