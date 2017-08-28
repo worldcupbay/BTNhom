@@ -1,0 +1,5 @@
+string sql="SELECT MaNV, TenNV FROM tblNhanVien WHERE MaNV='"+txtMaNV.Text.Trim()+"';";
+OleDataAdapter dataAdapter = new OleDataAdapter(sql,connection);
+DataTable dtbTimKiem=new DataTable();
+dataAdapter.Fill(dtbTimKiem);
+dgvHienThi.DataSource=dtbTimKiem;
