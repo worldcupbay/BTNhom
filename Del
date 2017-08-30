@@ -1,0 +1,93 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+namespace KhachHang
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'khachHangDataSet.KhachHang' table. You can move, or remove it, as needed.
+            this.khachHangTableAdapter.Fill(this.khachHangDataSet.KhachHang);
+
+        }
+        private void ketnoi()
+        {
+            try
+            {
+                SqlConnection kn = new SqlConnection(@"Data Source=ADMIN-PC\SQLEXPRESS;Initial Catalog=KhachHang;Integrated Security=True");
+                kn.Open();
+                string sql = "select * from KhachHang";
+                SqlCommand cmd = new SqlCommand(sql, kn);//thực thi các câu lệnh trong sql
+                SqlDataAdapter com = new SqlDataAdapter(cmd);//vận chuyển dữ liệu
+                DataTable table = new DataTable(); //tạo 1 bảng ảo trong hệ thống
+                com.Fill(table);//đổ dữ liệu vào bảng ảo
+                dataGridView1.DataSource = table; //bảng ảo này được đổ vào datagridview1
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi!!!");
+            }
+            finally
+            {
+                SqlConnection kn = new SqlConnection(@"Data Source=ADMIN-PC\SQLEXPRESS;Initial Catalog=KhachHang;Integrated Security=True");
+                kn.Close();
+            }
+        }
+        int index;
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            index = dataGridView1.CurrentRow.Index;
+            txtMKH.Text = dataGridView1.Rows[index].Cells[0].Value.ToString();
+            txtKH.Text = dataGridView1.Rows[index].Cells[1].Value.ToString();
+            txtDC.Text = dataGridView1.Rows[index].Cells[2].Value.ToString();
+            txtSDT.Text = dataGridView1.Rows[index].Cells[3].Value.ToString();
+           
+        }
+        string xoaKhachHang;
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlConnection kn = new SqlConnection(@"Data Source=ADMIN-PC\SQLEXPRESS;Initial Catalog=KhachHang;Integrated Security=True");
+                kn.Open();
+                xoaKhachHang = "delete KhachHang where MaKH ='" + txtMKH.Text + "'";
+                SqlCommand cmdxoaKhachHang = new SqlCommand(xoaKhachHang, kn);
+                cmdxoaKhachHang.ExecuteNonQuery();
+                ketnoi();
+
+
+
+            }
+            catch
+            {
+                MessageBox.Show("lỗi,không xóa được");
+
+            }
+            finally
+            {
+                SqlConnection kn = new SqlConnection(@"Data Source=ADMIN-PC\SQLEXPRESS;Initial Catalog=KhachHang;Integrated Security=True");
+                kn.Close();
+            }
+        }
+      
+
+       
+
+      
+    }
+}
